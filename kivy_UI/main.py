@@ -6,6 +6,9 @@ from kivy.config import Config
 Config.set('graphics', 'width', '600')
 Config.set('graphics', 'height', '960')
 
+from PointCalc import PointCalc
+from MolkkyGameKivy import MolkkyGameKivy
+
 class MainDisplay(BoxLayout):
     app_title = StringProperty("Molkky Scoreboard")
     input_text = StringProperty("Your Input")
@@ -29,6 +32,9 @@ class MainDisplay(BoxLayout):
     color_background = [0.66, 0.81, 0.93, 1]
     color_boader = [0.40, 0.65, 0.8, 0.3]
 
+    member_list = [["jon", "van", "ken"],["tom", "xi", "luis"]]
+    game_controller = MolkkyGameKivy(member_list)
+
     def update_label(self, text):
         self.input_text = text
 
@@ -45,7 +51,14 @@ class MainDisplay(BoxLayout):
         self.player_point = ""
     
     def register(self):
-        self.previous_point = self.player_point
+        # self.previous_point = self.player_point
+        # self.clear_display()
+
+        score, team_id = self.game_controller.add(int(self.player_point))
+        if(team_id == 0):
+            self.team0_score = str(score)
+        elif(team_id == 1):
+            self.team1_score = str(score)
         self.clear_display()
 
 

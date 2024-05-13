@@ -26,6 +26,7 @@ class PointCalc:
     
     def update_score(self):
         score = 0
+        self.score_board = []
         for point in self.point_board:
             score += point[1]
             score, is_continue = self.check_score(score)
