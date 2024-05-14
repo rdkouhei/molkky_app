@@ -1,6 +1,6 @@
 from kivy.app import App
 from kivy.uix.boxlayout import BoxLayout
-from kivy.properties import StringProperty
+from kivy.properties import StringProperty, ListProperty
 
 from kivy.config import Config
 Config.set('graphics', 'width', '600')
@@ -10,11 +10,11 @@ from PointCalc import PointCalc
 from MolkkyGameKivy import MolkkyGameKivy
 
 class MainDisplay(BoxLayout):
+    # Default Setting
     app_title = StringProperty("Molkky Scoreboard")
     input_text = StringProperty("Your Input")
     score_text = StringProperty("Your Score")
 
-    next_player_text = StringProperty("Team1 Kohei")
     player_point = StringProperty("")
     previous_point = StringProperty("12")
     pre_previous_point = StringProperty("6")
@@ -25,6 +25,37 @@ class MainDisplay(BoxLayout):
     team0_score = StringProperty("Score")
     team1_score = StringProperty("Score")
 
+    team0_turn1 = StringProperty("")
+    team0_turn2 = StringProperty("")
+    team0_turn3 = StringProperty("")
+    team0_turn4 = StringProperty("")
+    team0_turn5 = StringProperty("")
+    team0_turn6 = StringProperty("")
+    team0_turn7 = StringProperty("")
+    team0_turn8 = StringProperty("")
+    team0_turn9 = StringProperty("")
+    team0_turn10 = StringProperty("")
+    team0_turn11 = StringProperty("")
+
+    team0_points = [team0_turn1, team0_turn2, team0_turn3, team0_turn4, team0_turn5,
+                    team0_turn6, team0_turn7, team0_turn8, team0_turn9, team0_turn10]
+
+    team1_turn1 = StringProperty("")
+    team1_turn2 = StringProperty("")
+    team1_turn3 = StringProperty("")
+    team1_turn4 = StringProperty("")
+    team1_turn5 = StringProperty("")
+    team1_turn6 = StringProperty("")
+    team1_turn7 = StringProperty("")
+    team1_turn8 = StringProperty("")
+    team1_turn9 = StringProperty("")
+    team1_turn10 = StringProperty("")
+    team1_turn11 = StringProperty("")
+
+    team1_points = [team1_turn1, team1_turn2, team1_turn3, team1_turn4, team1_turn5,
+                    team1_turn6, team1_turn7, team1_turn8, team1_turn9, team1_turn10]
+
+    title_fontsize = 55
     h1_fontsize = 40
     h2_fontsize = 32
     h3_fontsize = 24
@@ -34,6 +65,10 @@ class MainDisplay(BoxLayout):
 
     member_list = [["jon", "van", "ken"],["tom", "xi", "luis"]]
     game_controller = MolkkyGameKivy(member_list)
+    next_player_text = StringProperty("Team 0     " + game_controller.get_nextplayer(0))
+
+    # team0_pointboard = ListProperty()
+    # team0_pointboard = [StringProperty("10"), StringProperty("20")]
 
     def update_label(self, text):
         self.input_text = text
@@ -51,15 +86,21 @@ class MainDisplay(BoxLayout):
         self.player_point = ""
     
     def register(self):
-        # self.previous_point = self.player_point
-        # self.clear_display()
+        if(self.player_point != ""):
+            score, team_id, round = self.game_controller.add(int(self.player_point))
+            if(team_id == 0):
+                self.team0_score = str(score)
+                self.team0_points[round-1] = self.player_point
+                self.next_player_text = "Team 1       " + self.game_controller.get_nextplayer(1)
+            elif(team_id == 1):
+                self.team1_score = str(score)
+                self.team1_points[round-1] = self.player_point
+                self.next_player_text = "Team 0       " + self.game_controller.get_nextplayer(0)
+            self.clear_display()
+        else:
+            pass
 
-        score, team_id = self.game_controller.add(int(self.player_point))
-        if(team_id == 0):
-            self.team0_score = str(score)
-        elif(team_id == 1):
-            self.team1_score = str(score)
-        self.clear_display()
+        
 
 
 class MolkkyApp(App):
