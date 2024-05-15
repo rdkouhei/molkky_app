@@ -3,8 +3,8 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.properties import StringProperty, ListProperty
 
 from kivy.config import Config
-# Config.set('graphics', 'width', '600')
-# Config.set('graphics', 'height', '960')
+Config.set('graphics', 'width', '600')
+Config.set('graphics', 'height', '960')
 
 # Import Original Module (../module/)
 import sys
@@ -12,12 +12,20 @@ sys.path.append('../module/')
 from PointCalc import PointCalc
 from MolkkyGameKivy import MolkkyGameKivy
 
+# kvファイルを画面ごとに分離してバラで読み込む
+from kivy.lang import Builder
+Builder.load_file('setting.kv')
+from kivy.factory import Factory
+
+
 class MainDisplay(BoxLayout):
     '''
     Game Setting
     '''
     member_list = [["jon", "van", "ken"],["tom", "xi", "luis"]] # Sample Team
     game_controller = MolkkyGameKivy(member_list)
+
+    setting_window = None
 
     '''
     Label Setting
@@ -58,6 +66,13 @@ class MainDisplay(BoxLayout):
     color_background = [0.66, 0.81, 0.93, 1]
     color_boader = [0.40, 0.65, 0.8, 0.3]
 
+    '''
+    Method
+    '''
+    def __init__(self, **kwargs):
+        self.setting_window = Factory.Setting()
+        super(MainDisplay, self).__init__(**kwargs)
+
     def update_label(self, text):
         self.input_text = text
 
@@ -65,7 +80,13 @@ class MainDisplay(BoxLayout):
         self.input_text = 'Back'
     
     def buttonClicked_next(self):
-        self.input_text = 'Next'
+        # self.input_text = 'Next'
+        self.clear_widgets()
+        self.add_widget(self.setting_window)
+    
+    def buttonStartGame(self):
+        self.clear_widgets()
+        # self.add_widget(self.setting_window)
     
     def add_number(self, number):
         self.player_point += number
@@ -87,7 +108,10 @@ class MainDisplay(BoxLayout):
             self.clear_display()
         else:
             pass
-
+    
+    # def chage_window(self):
+    #     self.clear_widgets()
+    #     self.add_widget(self.setting_window)
         
 
 
