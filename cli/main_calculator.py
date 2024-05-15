@@ -1,3 +1,6 @@
+# Import Original Module (../module/)
+import sys
+sys.path.append('../module/')
 from PointCalc import PointCalc
 
 # Create Single Team    

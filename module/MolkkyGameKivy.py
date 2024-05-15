@@ -48,8 +48,9 @@ class MolkkyGameKivy():
         turn_team_id = self.turn % self.team_num
         turn_team = self.teams[turn_team_id]
         score, is_continue = turn_team.add(point)
+        round = turn_team.get_next_pointer()
         self.turn += 1
-        return score, turn_team_id
+        return score, turn_team_id, round
     
     def back():
         return 0
