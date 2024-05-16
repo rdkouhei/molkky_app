@@ -3,8 +3,8 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.properties import StringProperty, ListProperty
 
 from kivy.config import Config
-# Config.set('graphics', 'width', '600')
-# Config.set('graphics', 'height', '960')
+Config.set('graphics', 'width', '600')
+Config.set('graphics', 'height', '960')
 
 # Import Original Module (../module/)
 import sys
@@ -12,12 +12,21 @@ sys.path.append('../module/')
 from PointCalc import PointCalc
 from MolkkyGameKivy import MolkkyGameKivy
 
+# kvファイルを画面ごとに分離してバラで読み込む
+from kivy.lang import Builder
+Builder.load_file('teamsetting1.kv')
+Builder.load_file('teamsetting2.kv')
+from kivy.factory import Factory
+
+
 class MainDisplay(BoxLayout):
     '''
     Game Setting
     '''
     member_list = [["jon", "van", "ken"],["tom", "xi", "luis"]] # Sample Team
-    game_controller = MolkkyGameKivy(member_list)
+
+    team_setting_window = None
+    member_setting_window = None
 
     '''
     Label Setting
@@ -28,9 +37,10 @@ class MainDisplay(BoxLayout):
     score_text = StringProperty("Your Score")
 
     player_point = StringProperty("")
-    previous_point = StringProperty("12")
-    pre_previous_point = StringProperty("6")   
-    next_player_text = StringProperty("Team 0     " + game_controller.get_nextplayer(0))
+    previous_point = StringProperty("")
+    pre_previous_point = StringProperty("")   
+    next_player_text = StringProperty("Team 0     ")
+    
  
     '''
     Team Property
@@ -58,6 +68,25 @@ class MainDisplay(BoxLayout):
     color_background = [0.66, 0.81, 0.93, 1]
     color_boader = [0.40, 0.65, 0.8, 0.3]
 
+    '''
+    Method
+    '''
+    def __init__(self, **kwargs):
+        self.team_setting_window = Factory.TeamSetting1()
+        self.member_setting_window = Factory.TeamSetting2()
+        self.game_controller = MolkkyGameKivy(self.member_list)
+
+        # Reset variable
+        self.team0_points = ['', '', '', '', '', '',
+                                 '', '', '', '', '']
+        self.team1_points = ['', '', '', '', '', '',
+                                 '', '', '', '', '']
+        self.team0_score = "0"
+        self.team1_score = "0"
+        self.next_player_text = ""
+        
+        super(MainDisplay, self).__init__(**kwargs)
+
     def update_label(self, text):
         self.input_text = text
 
@@ -65,8 +94,18 @@ class MainDisplay(BoxLayout):
         self.input_text = 'Back'
     
     def buttonClicked_next(self):
-        self.input_text = 'Next'
+        # self.input_text = 'Next'
+        self.clear_widgets()
+        self.add_widget(self.team_setting_window)
     
+    def buttonMemberSetting(self):
+        self.clear_widgets()
+        self.add_widget(self.member_setting_window)
+    
+    def buttonStartGame(self):
+        self.clear_widgets()
+        self.__init__()    
+
     def add_number(self, number):
         self.player_point += number
     
@@ -87,7 +126,10 @@ class MainDisplay(BoxLayout):
             self.clear_display()
         else:
             pass
-
+    
+    # def chage_window(self):
+    #     self.clear_widgets()
+    #     self.add_widget(self.setting_window)
         
 
 
