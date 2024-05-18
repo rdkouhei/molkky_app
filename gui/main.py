@@ -102,6 +102,10 @@ class MainDisplay(BoxLayout):
         self.clear_widgets()
         self.add_widget(self.team_num_window)
     
+    # def buttonClicked_back(self):
+    #     self.clear_widgets()
+    #     self.add_widget(self.main_board)
+
     def buttonPlayerSetting(self):
         if self.team_num_window.check_team_setting():
             # Pass team setting to new widget
