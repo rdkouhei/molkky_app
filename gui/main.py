@@ -122,7 +122,7 @@ class MainDisplay(BoxLayout):
             self.clear_widgets()
             self.__init__()
         else:
-            self.member_setting_window.message = "Member Setting is not completed."
+            self.member_setting_window.message_instruction = "Member Setting is not completed."
 
     def add_number(self, number):
         self.player_point += number
