@@ -103,19 +103,25 @@ class MainDisplay(BoxLayout):
         self.add_widget(self.team_num_window)
     
     def buttonPlayerSetting(self):
-        # Pass team setting to new widget
-        team_num = self.team_num_window.team_num
-        player_num = self.team_num_window.player_num
-        self.member_setting_window.team_setting(team_num, player_num)
+        if self.team_num_window.check_team_setting():
+            # Pass team setting to new widget
+            team_num = self.team_num_window.team_num
+            player_num = self.team_num_window.player_num
+            self.member_setting_window.team_setting(team_num, player_num)
 
-        # Change Widget
-        self.clear_widgets()
-        self.add_widget(self.member_setting_window)
+            # Change Widget
+            self.clear_widgets()
+            self.add_widget(self.member_setting_window)
+        else:
+            self.team_num_window.message = "Team Setting is not completed."
     
     def buttonStartGame(self):
-        self.member_list = self.member_setting_window.player_name
-        self.clear_widgets()
-        self.__init__()    
+        if self.member_setting_window.check_player_setting():
+            self.member_list = self.member_setting_window.player_name
+            self.clear_widgets()
+            self.__init__()
+        else:
+            self.member_setting_window.message = "Member Setting is not completed."
 
     def add_number(self, number):
         self.player_point += number

@@ -5,7 +5,8 @@ from kivy.properties import StringProperty, ListProperty
 class TeamMemberSetting(BoxLayout):
     text_input = StringProperty("")
     # player_name = ListProperty([])
-
+    message = StringProperty("")
+    
     def __init__(self, **kwargs):
         self.team_num = 0
         self.player_num = []
@@ -37,14 +38,25 @@ class TeamMemberSetting(BoxLayout):
         # Add player
         if self.team_pointer < self.team_num:    
             self.player_name[self.team_pointer].append(self.text_input)
-            self.append_counter += 1       
+            self.append_counter += 1
             print(f"Added a player : {self.player_name}") 
         else:
             print("Go Next")
 
         self.clear_input()
+    
+    '''
+    Check team setting
+    '''
+    def check_player_setting(self):
+        check = True
+        for i, team in enumerate(self.player_name):
+            if len(team) == self.player_num[i]:
+                pass
+            else:
+                check = False
+        return check
         
-
 class TeamMemberSettingApp(App):
     def build(self):
         return TeamMemberSetting()

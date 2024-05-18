@@ -15,7 +15,7 @@ class TeamNumSetting(BoxLayout):
         self.register_player_num_count = 0
         self.setting_view = ["", ""]
         
-        self.team_num = 0
+        self.team_num = -1
         self.player_num = []
         
         super(TeamNumSetting, self).__init__(**kwargs)
@@ -27,23 +27,33 @@ class TeamNumSetting(BoxLayout):
     def clear_display(self):
         self.user_input = ""
     
+    '''
+    Register Property(Number of Team and Member)
+    '''
     def register_team_num(self):
-        self.team_num = int(self.user_input)
-        self.clear_display()
-        self.setting_view[0] = f"Team Number : {self.team_num}"
-        self.message = "Input Player Number"
-        self.register_mode += 1
-                        
-    def register_player_num(self):
-        self.player_num.append(int(self.user_input))
-        self.clear_display()
-        self.setting_view[1] += f"Team {self.register_player_num_count}, Player Number : {self.player_num[-1]}\n"
-        self.register_player_num_count += 1
-        if self.register_player_num_count >= self.team_num:
-            self.message = "Go to Next"
+        if int(self.user_input) != 0:
+            self.team_num = int(self.user_input)
+            self.clear_display()
+            self.setting_view[0] = f"Team Number : {self.team_num}"
+            self.message = "Input Player Number"
             self.register_mode += 1
         else:
-            self.message = "Input Player Number"
+            self.message = "Incorrect Input(0)\nInput Team Number"
+            self.clear_display()
+                        
+    def register_player_num(self):
+        if int(self.user_input) != 0:
+            self.player_num.append(int(self.user_input))
+            self.clear_display()
+            self.setting_view[1] += f"Team {self.register_player_num_count}, Player Number : {self.player_num[-1]}\n"
+            self.register_player_num_count += 1
+            if self.register_player_num_count >= self.team_num:
+                self.message = "Go to Next"
+                self.register_mode += 1
+            else:
+                self.message = "Input Player Number"
+        else:
+            self.message = "Incorrect Input(0)\nInput Player Number"
 
     def register(self):
         try:
@@ -55,6 +65,12 @@ class TeamNumSetting(BoxLayout):
                 self.register_func[self.register_mode]()
             else:
                 print("Go to Next")
+    
+    '''
+    Check team setting
+    '''
+    def check_team_setting(self):
+        return self.team_num == len(self.player_num)
 
 class TeamNumSettingApp(App):
     def build(self):
