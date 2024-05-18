@@ -25,16 +25,18 @@
 
     BoxLayout:
         orientation: "vertical"
+        size_hint: 1, 0.6
         Label:
-            size_hint: 1, 1
+            size_hint: 1, 0.4
             text: root.text_input
 
         Label:
-            size_hint: 1, 1
+            size_hint: 1, 0.4
             text: root.message
 
         BoxLayout:
             orientation: "horizontal"
+            size_hint: 1, 0.2
             TextInput:
                 size_hint: 0.7, 1
                 text: ''
@@ -43,3 +45,5 @@
             AddButton:
                 size_hint: 0.3, 1
                 text: "Add Player"
+    Widget:
+        size_hint: 1, 0.4

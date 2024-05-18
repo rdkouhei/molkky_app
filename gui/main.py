@@ -16,12 +16,9 @@ from TeamMemberSetting import TeamMemberSetting
 
 # kvファイルを画面ごとに分離してバラで読み込む
 from kivy.lang import Builder
-# Builder.load_file('teamsetting1.kv')
-# Builder.load_file('teamsetting2.kv')
 Builder.load_file('teamnumsetting.kv')
 Builder.load_file('teammembersetting.kv')
 from kivy.factory import Factory
-
 
 class MainDisplay(BoxLayout):
     '''
