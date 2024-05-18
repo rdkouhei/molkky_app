@@ -1,6 +1,6 @@
 #: import get_color_from_hex kivy.utils.get_color_from_hex
 
-<CalcButtonTeam@Button>:
+<CalcButton@Button>:
 	font_size: 30
 	background_normal: ''
 	background_down: ''
@@ -12,13 +12,14 @@
 	font: "Roboto"
 	font_size: 30
 	bold: True
-	on_press: app.root.add_team_number(self.text)
+	on_press: app.root.team_num_window.add_number(self.text)
 
 <ClearButtonTeam@CalcButton>:
-	on_press: app.root.add_team_clear()
+	on_press: app.root.team_num_window.clear_display()
 
 <EqualButtonTeam@CalcButton>:
-	on_press: app.root.add_team_ok('3')
+	on_press: app.root.team_num_window.register()
+    # on_press: app.root.register_team()
 
 <KeyboardTeam@GridLayout>:
 	cols: 3
@@ -54,7 +55,7 @@
 	EqualButtonTeam:
 		text: "OK"
 
-<TeamSetting1@BoxLayout>
+<TeamNumSetting@BoxLayout>
     orientation: "vertical"
 
     ActionBar:
@@ -66,11 +67,17 @@
 
             ActionButton:
                 text: 'Go Next'
-                on_press: app.root.buttonMemberSetting()
+                on_press: app.root.buttonPlayerSetting()
 
     BoxLayout:
+        orientation: "vertical"
         Label:
-            id: team_num_label
-            text: "Team number"
+            text: root.message
+        Label:
+            text: root.setting_view[0]
+        Label:
+            text: root.setting_view[1]
+        Label:
+            text: root.user_input
     
     KeyboardTeam:

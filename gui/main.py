@@ -11,11 +11,15 @@ import sys
 sys.path.append('../module/')
 from PointCalc import PointCalc
 from MolkkyGameKivy import MolkkyGameKivy
+from TeamNumSetting import TeamNumSetting
+from TeamMemberSetting import TeamMemberSetting
 
 # kvファイルを画面ごとに分離してバラで読み込む
 from kivy.lang import Builder
-Builder.load_file('teamsetting1.kv')
-Builder.load_file('teamsetting2.kv')
+# Builder.load_file('teamsetting1.kv')
+# Builder.load_file('teamsetting2.kv')
+Builder.load_file('teamnumsetting.kv')
+Builder.load_file('teammembersetting.kv')
 from kivy.factory import Factory
 
 
@@ -39,8 +43,8 @@ class MainDisplay(BoxLayout):
     player_point = StringProperty("")
     previous_point = StringProperty("")
     pre_previous_point = StringProperty("")   
-    next_player_text = StringProperty("Team 0     ")
-    
+    next_player_text = StringProperty("")
+    # team_num = StringProperty("")    
  
     '''
     Team Property
@@ -72,8 +76,8 @@ class MainDisplay(BoxLayout):
     Method
     '''
     def __init__(self, **kwargs):
-        self.team_setting_window = Factory.TeamSetting1()
-        self.member_setting_window = Factory.TeamSetting2()
+        self.team_num_window = TeamNumSetting()
+        self.member_setting_window = TeamMemberSetting()
         self.game_controller = MolkkyGameKivy(self.member_list)
 
         # Reset variable
@@ -83,7 +87,7 @@ class MainDisplay(BoxLayout):
                                  '', '', '', '', '']
         self.team0_score = "0"
         self.team1_score = "0"
-        self.next_player_text = ""
+        self.next_player_text = "Team 0       " + self.game_controller.get_nextplayer(0)
         
         super(MainDisplay, self).__init__(**kwargs)
 
@@ -94,15 +98,22 @@ class MainDisplay(BoxLayout):
         self.input_text = 'Back'
     
     def buttonClicked_next(self):
-        # self.input_text = 'Next'
+        # Change Widget
         self.clear_widgets()
-        self.add_widget(self.team_setting_window)
+        self.add_widget(self.team_num_window)
     
-    def buttonMemberSetting(self):
+    def buttonPlayerSetting(self):
+        # Pass team setting to new widget
+        team_num = self.team_num_window.team_num
+        player_num = self.team_num_window.player_num
+        self.member_setting_window.team_setting(team_num, player_num)
+
+        # Change Widget
         self.clear_widgets()
         self.add_widget(self.member_setting_window)
     
     def buttonStartGame(self):
+        self.member_list = self.member_setting_window.player_name
         self.clear_widgets()
         self.__init__()    
 
@@ -130,6 +141,9 @@ class MainDisplay(BoxLayout):
     # def chage_window(self):
     #     self.clear_widgets()
     #     self.add_widget(self.setting_window)
+
+    # def add_team_ok(self, number):
+    #     self.team_num += number
         
 
 
