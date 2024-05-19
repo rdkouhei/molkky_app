@@ -1,6 +1,8 @@
 from kivy.app import App
 from kivy.uix.boxlayout import BoxLayout
-from kivy.properties import StringProperty, ListProperty
+from kivy.properties import StringProperty, ListProperty, ObjectProperty
+
+from kivy.uix.screenmanager import Screen
 
 class TeamMemberSetting(BoxLayout):
     text_input = StringProperty("")
@@ -9,6 +11,7 @@ class TeamMemberSetting(BoxLayout):
     message_team = StringProperty("")
     message_instruction = StringProperty("")
     input_box = StringProperty("")
+    go_next_screen = ObjectProperty(None)
 
     def __init__(self, **kwargs):
         self.team_num = 0
