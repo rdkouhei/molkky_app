@@ -43,13 +43,15 @@ class ScoreBoard(BoxLayout):
     # Team0
     team0_name = StringProperty("team0")
     team0_score = StringProperty("Score")
-    team0_points = ListProperty(['', '', '', '', '', '',
-                                 '', '', '', '', ''])
+    team0_points = ListProperty(['', '', '', '', '', '', '', '', '', '', 
+                                 '', '', '', '', '', '', '', '', '', '',
+                                 '', '', '', '', '', '', '', '', '', ''])
     # Team1
     team1_name = StringProperty("team1")
     team1_score = StringProperty("Score")
-    team1_points = ListProperty(['', '', '', '', '', '',
-                                 '', '', '', '', ''])
+    team1_points = ListProperty(['', '', '', '', '', '', '', '', '', '', 
+                                 '', '', '', '', '', '', '', '', '', '',
+                                 '', '', '', '', '', '', '', '', '', ''])
     
     '''
     Graphical Property
@@ -71,13 +73,17 @@ class ScoreBoard(BoxLayout):
         self.clear_widgets()
 
         # Reset variable
-        self.team0_points = ['', '', '', '', '', '',
-                                 '', '', '', '', '']
-        self.team1_points = ['', '', '', '', '', '',
-                                 '', '', '', '', '']
+        self.team0_points = ['', '', '', '', '', '', '', '', '', '', 
+                             '', '', '', '', '', '', '', '', '', '',
+                             '', '', '', '', '', '', '', '', '', '']
+        self.team1_points = ['', '', '', '', '', '', '', '', '', '', 
+                             '', '', '', '', '', '', '', '', '', '',
+                             '', '', '', '', '', '', '', '', '', '']
         self.team0_score = "0"
         self.team1_score = "0"        
         super(ScoreBoard, self).__init__(**kwargs)
+
+        # self.ids.round1.text = "Hello"
 
     def reset_game(self, member):
         self.__init__()
