@@ -23,14 +23,6 @@ from kivy.factory import Factory
 
 class ScoreBoard(BoxLayout):
     '''
-    Game Setting
-    '''
-    # member_list = [["jon", "van", "ken"],["tom", "xi", "luis"]] # Sample Team
-
-    # team_setting_window = None
-    # member_setting_window = None
-
-    '''
     Label Setting
     '''
     # Default Setting
@@ -71,13 +63,12 @@ class ScoreBoard(BoxLayout):
     color_background = [0.66, 0.81, 0.93, 1]
     color_boader = [0.40, 0.65, 0.8, 0.3]
 
+
     '''
     Method
     '''
     def __init__(self, **kwargs):
         self.clear_widgets()
-        # print(f"Score Board is loaded! Member {self.member_list}")
-        # self.game_controller = MolkkyGameKivy(self.member_list)
 
         # Reset variable
         self.team0_points = ['', '', '', '', '', '',
@@ -85,9 +76,7 @@ class ScoreBoard(BoxLayout):
         self.team1_points = ['', '', '', '', '', '',
                                  '', '', '', '', '']
         self.team0_score = "0"
-        self.team1_score = "0"
-        # self.next_player_text = "Team 0       " + self.game_controller.get_nextplayer(0)
-        
+        self.team1_score = "0"        
         super(ScoreBoard, self).__init__(**kwargs)
 
     def reset_game(self, member):
@@ -102,39 +91,6 @@ class ScoreBoard(BoxLayout):
 
     def update_label(self, text):
         self.input_text = text
-
-    # def buttonClicked_back(self):
-    #     self.input_text = 'Back'
-    
-    # def buttonClicked_next(self):
-    #     # Change Widget
-    #     self.clear_widgets()
-    #     self.add_widget(self.team_num_window)
-    
-    # def buttonClicked_back(self):
-    #     self.clear_widgets()
-    #     self.add_widget(self.main_board)
-
-    # def buttonPlayerSetting(self):
-    #     if self.team_num_window.check_team_setting():
-    #         # Pass team setting to new widget
-    #         team_num = self.team_num_window.team_num
-    #         player_num = self.team_num_window.player_num
-    #         self.member_setting_window.team_setting(team_num, player_num)
-
-    #         # Change Widget
-    #         self.clear_widgets()
-    #         self.add_widget(self.member_setting_window)
-    #     else:
-    #         self.team_num_window.message = "Team Setting is not completed."
-    
-    # def buttonStartGame(self):
-    #     if self.member_setting_window.check_player_setting():
-    #         self.member_list = self.member_setting_window.player_name
-    #         self.clear_widgets()
-    #         self.__init__()
-    #     else:
-    #         self.member_setting_window.message_instruction = "Member Setting is not completed."
 
     def add_number(self, number):
         self.player_point += number

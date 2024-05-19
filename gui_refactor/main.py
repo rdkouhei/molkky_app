@@ -28,7 +28,6 @@ class ScreenTeamNumSetting(Screen):
             # Pass team setting to new widget
             team_num = self.team_number_setting.team_num
             player_num = self.team_number_setting.player_num
-            # self.member_setting_window.team_setting(team_num, player_num)
 
             next_screen = self.manager.get_screen('team_member_setting')
             next_screen.update_team_property(team_num, player_num)
