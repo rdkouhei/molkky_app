@@ -67,8 +67,17 @@ class ScreenScoreBoard(Screen):
 
     def reset_game(self, member_list):
         self.score_board.reset_game(member_list)
+    
+    def reset_setting_screen(self):
+        team_num_screen = self.manager.get_screen('team_num_setting')
+        team_num_screen.team_number_setting.clear_widgets()
+        team_num_screen.__init__()
+        team_member_screen = self.manager.get_screen('team_member_setting')
+        team_member_screen.member_setting.clear_widgets()
+        team_member_screen.__init__()
 
     def go_next_screen(self):
+        self.reset_setting_screen()        
         self.manager.current = 'team_num_setting'
 
 '''
