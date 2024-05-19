@@ -29,7 +29,7 @@
         Label:
             size_hint: 1, 0.4
             text: root.message_instruction
-            
+
         Label:
             size_hint: 1, 0.4
             text: root.message_team
@@ -46,8 +46,9 @@
             orientation: "horizontal"
             size_hint: 1, 0.2
             TextInput:
+                id: input_text
                 size_hint: 0.7, 1
-                text: ''
+                text: ""
                 on_text: root.update_label(self.text)
 
             AddButton:

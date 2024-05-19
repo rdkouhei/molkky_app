@@ -8,6 +8,7 @@ class TeamMemberSetting(BoxLayout):
     message_player = StringProperty("")
     message_team = StringProperty("")
     message_instruction = StringProperty("")
+    input_box = StringProperty("")
 
     def __init__(self, **kwargs):
         self.team_num = 0
@@ -45,6 +46,7 @@ class TeamMemberSetting(BoxLayout):
             self.message_player = f"Added a player : {self.player_name}"
             if (self.team_pointer == self.team_num-1) and (self.append_counter == self.player_num[self.team_pointer]):
                 self.message_instruction = "Go Next"
+            self.ids.input_text.text = ""
         else:
             pass
 
