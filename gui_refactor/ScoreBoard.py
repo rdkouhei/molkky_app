@@ -1,5 +1,7 @@
 from kivy.app import App
 from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.label import Label
+from kivy.uix.button import Button
 from kivy.properties import StringProperty, ListProperty, ObjectProperty
 
 from kivy.config import Config
@@ -91,7 +93,36 @@ class ScoreBoard(BoxLayout):
         self.member_list = member
         self.game_controller = MolkkyGameKivy(member)
         self.next_player_text = "Team 0       " + self.game_controller.get_nextplayer(0)
+        self.add_round_widgets(len(self.team0_points))
     
+    def add_round_widgets(self, round_num):
+        self.ids.grid_layout.cols = len(self.member_list) + 1 
+        for i in range(round_num):
+            self.add_round_label(i)
+            self.add_round_button(i, len(self.member_list))
+
+    def add_round_label(self,i):
+        new_label = Label(text=str(i+1))
+        self.ids.grid_layout.add_widget(new_label)
+    
+    def add_round_button(self, row, button_col):
+        # 3チーム以上に対応させる
+        new_button_0 = Button()
+        new_button_0.text = self.team0_points[row]
+        self.ids.grid_layout.add_widget(new_button_0)
+        self.bind_team0_point(new_button_0, row)
+
+        new_button_1 = Button()
+        new_button_1.text = self.team1_points[row]
+        self.ids.grid_layout.add_widget(new_button_1)
+        self.bind_team1_point(new_button_1, row)
+    
+    def bind_team0_point(self, button, index):
+        self.bind(team0_points=lambda instance, value: setattr(button, 'text', value[index]))
+    
+    def bind_team1_point(self, button, index):
+        self.bind(team1_points=lambda instance, value: setattr(button, 'text', value[index]))
+
     def next_game(self):
         self.reset_game(self.member_list)
 
