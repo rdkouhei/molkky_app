@@ -164,6 +164,7 @@
             orientation: 'horizontal'
             size_hint: 1, 1
             padding: 20
+            id: score_board
 
             # visualize boader
             canvas.before:
@@ -173,31 +174,7 @@
                     rectangle: self.x, self.y, self.width, self.height
                     width: 1.5
 
-            BoxLayout:
-                orientation: 'vertical'
-                size_hint: 1, 1
-
-                BorderLabel:
-                    text: root.team0_name
-                    size_hint: 0.5, 0.3
-
-                BorderLabel:
-                    text: root.team0_score
-                    size_hint: 1, 0.7
-                    font_size: 48
-
-            BoxLayout:
-                orientation: 'vertical'
-                size_hint: 1, 1
-
-                BorderLabel:
-                    text: root.team1_name
-                    size_hint: 0.5, 0.3
-
-                BorderLabel:
-                    text: root.team1_score
-                    size_hint: 1, 0.7
-                    font_size: 48
+            
 
     # sub box
     BoxLayout:

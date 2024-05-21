@@ -36,7 +36,6 @@ class ScoreBoard(BoxLayout):
     previous_point = StringProperty("")
     pre_previous_point = StringProperty("")   
     next_player_text = StringProperty("")
-    # team_num = StringProperty("")    
     go_next_screen = ObjectProperty(None)
  
     '''
@@ -55,6 +54,20 @@ class ScoreBoard(BoxLayout):
                                  '', '', '', '', '', '', '', '', '', '',
                                  '', '', '', '', '', '', '', '', '', ''])
     
+    # Team2
+    team2_name = StringProperty("team2")
+    team2_score = StringProperty("Score")
+    team2_points = ListProperty(['', '', '', '', '', '', '', '', '', '', 
+                                 '', '', '', '', '', '', '', '', '', '',
+                                 '', '', '', '', '', '', '', '', '', ''])
+    
+    # Team3
+    team3_name = StringProperty("team3")
+    team3_score = StringProperty("Score")
+    team3_points = ListProperty(['', '', '', '', '', '', '', '', '', '', 
+                                 '', '', '', '', '', '', '', '', '', '',
+                                 '', '', '', '', '', '', '', '', '', ''])
+
     '''
     Graphical Property
     '''
@@ -67,25 +80,31 @@ class ScoreBoard(BoxLayout):
     color_background = [0.66, 0.81, 0.93, 1]
     color_boader = [0.40, 0.65, 0.8, 0.3]
 
-
     '''
     Method
     '''
     def __init__(self, **kwargs):
         self.clear_widgets()
 
-        # Reset variable
-        self.team0_points = ['', '', '', '', '', '', '', '', '', '', 
-                             '', '', '', '', '', '', '', '', '', '',
-                             '', '', '', '', '', '', '', '', '', '']
-        self.team1_points = ['', '', '', '', '', '', '', '', '', '', 
-                             '', '', '', '', '', '', '', '', '', '',
-                             '', '', '', '', '', '', '', '', '', '']
         self.team0_score = "0"
         self.team1_score = "0"        
-        super(ScoreBoard, self).__init__(**kwargs)
+        self.team2_score = "0"        
+        self.team3_score = "0"
 
-        # self.ids.round1.text = "Hello"
+        self.team0_points = ['', '', '', '', '', '', '', '', '', '', 
+                            '', '', '', '', '', '', '', '', '', '',
+                            '', '', '', '', '', '', '', '', '', '']
+        self.team1_points = ['', '', '', '', '', '', '', '', '', '', 
+                            '', '', '', '', '', '', '', '', '', '',
+                            '', '', '', '', '', '', '', '', '', '']
+        self.team2_points = ['', '', '', '', '', '', '', '', '', '', 
+                            '', '', '', '', '', '', '', '', '', '',
+                            '', '', '', '', '', '', '', '', '', '']
+        self.team3_points = ['', '', '', '', '', '', '', '', '', '', 
+                            '', '', '', '', '', '', '', '', '', '',
+                            '', '', '', '', '', '', '', '', '', '']
+
+        super(ScoreBoard, self).__init__(**kwargs)
 
     def reset_game(self, member):
         self.__init__()
@@ -93,7 +112,17 @@ class ScoreBoard(BoxLayout):
         self.member_list = member
         self.game_controller = MolkkyGameKivy(member)
         self.next_player_text = "Team 0       " + self.game_controller.get_nextplayer(0)
+        
+        # Team Oder ex) 3 teams : [1,2,0]
+        self.team_oder = []
+        for i in range(len(member)):
+            if i != len(member)-1:
+                self.team_oder.append(i+1)
+            else:
+                self.team_oder.append(0)
+
         self.add_round_widgets(len(self.team0_points))
+        self.add_score_widget(len(member))
     
     def add_round_widgets(self, round_num):
         self.ids.grid_layout.cols = len(self.member_list) + 1 
@@ -107,21 +136,79 @@ class ScoreBoard(BoxLayout):
     
     def add_round_button(self, row, button_col):
         # 3チーム以上に対応させる
-        new_button_0 = Button()
-        new_button_0.text = self.team0_points[row]
-        self.ids.grid_layout.add_widget(new_button_0)
-        self.bind_team0_point(new_button_0, row)
+        bind_func = [self.bind_team0_point, self.bind_team1_point, self.bind_team2_point, self.bind_team3_point]
+        team_points = [self.team0_points, self.team1_points, self.team2_points, self.team3_points]
+        for i in range(button_col):
+            new_button = Button()
+            new_button.text = team_points[i][row]
+            self.ids.grid_layout.add_widget(new_button)
+            bind_func[i](new_button, row)
 
-        new_button_1 = Button()
-        new_button_1.text = self.team1_points[row]
-        self.ids.grid_layout.add_widget(new_button_1)
-        self.bind_team1_point(new_button_1, row)
-    
     def bind_team0_point(self, button, index):
         self.bind(team0_points=lambda instance, value: setattr(button, 'text', value[index]))
     
     def bind_team1_point(self, button, index):
         self.bind(team1_points=lambda instance, value: setattr(button, 'text', value[index]))
+    
+    def bind_team2_point(self, button, index):
+        self.bind(team2_points=lambda instance, value: setattr(button, 'text', value[index]))
+    
+    def bind_team3_point(self, button, index):
+        self.bind(team3_points=lambda instance, value: setattr(button, 'text', value[index]))
+
+    def add_score_widget(self, team_num):
+        score_board = self.ids.score_board
+        score_board.clear_widgets()
+
+        add_team_score_widget = [self.add_team0_score_widget, self.add_team1_score_widget, 
+                                 self.add_team2_score_widget, self.add_team3_score_widget]
+        for i in range(team_num):
+            score_layout = add_team_score_widget[i]()
+            score_board.add_widget(score_layout)
+
+    def add_team0_score_widget(self):
+        # Team 0 layout
+        team0_layout = BoxLayout(orientation='vertical', size_hint=(1, 1))
+        team0_name_label = Factory.BorderLabel(text=self.team0_name, size_hint=(0.5, 0.3))
+        team0_score_label = Factory.BorderLabel(text=self.team0_score, size_hint=(1, 0.7), font_size=48)
+        team0_layout.add_widget(team0_name_label)
+        team0_layout.add_widget(team0_score_label)
+        self.bind(team0_score=lambda instance, value: setattr(team0_score_label, 'text', value))
+
+        return team0_layout
+    
+    def add_team1_score_widget(self):
+        # Team 1 layout
+        team1_layout = BoxLayout(orientation='vertical', size_hint=(1, 1))
+        team1_name_label = Factory.BorderLabel(text=self.team1_name, size_hint=(0.5, 0.3))
+        team1_score_label = Factory.BorderLabel(text=self.team1_score, size_hint=(1, 0.7), font_size=48)
+        team1_layout.add_widget(team1_name_label)
+        team1_layout.add_widget(team1_score_label)
+        self.bind(team1_score=lambda instance, value: setattr(team1_score_label, 'text', value))
+
+        return team1_layout
+    
+    def add_team2_score_widget(self):
+        # Team 2 layout
+        team2_layout = BoxLayout(orientation='vertical', size_hint=(1, 1))
+        team2_name_label = Factory.BorderLabel(text=self.team2_name, size_hint=(0.5, 0.3))
+        team2_score_label = Factory.BorderLabel(text=self.team2_score, size_hint=(1, 0.7), font_size=48)
+        team2_layout.add_widget(team2_name_label)
+        team2_layout.add_widget(team2_score_label)
+        self.bind(team2_score=lambda instance, value: setattr(team2_score_label, 'text', value))
+
+        return team2_layout
+    
+    def add_team3_score_widget(self):
+        # Team 3 layout
+        team3_layout = BoxLayout(orientation='vertical', size_hint=(1, 1))
+        team3_name_label = Factory.BorderLabel(text=self.team3_name, size_hint=(0.5, 0.3))
+        team3_score_label = Factory.BorderLabel(text=self.team3_score, size_hint=(1, 0.7), font_size=48)
+        team3_layout.add_widget(team3_name_label)
+        team3_layout.add_widget(team3_score_label)
+        self.bind(team3_score=lambda instance, value: setattr(team3_score_label, 'text', value))
+
+        return team3_layout
 
     def next_game(self):
         self.reset_game(self.member_list)
@@ -138,14 +225,23 @@ class ScoreBoard(BoxLayout):
     def register(self):
         if(self.player_point != ""):
             score, team_id, round = self.game_controller.add(int(self.player_point))
+            next_team_id = self.team_oder[team_id]
             if(team_id == 0):
                 self.team0_score = str(score)
                 self.team0_points[round-1] = self.player_point
-                self.next_player_text = "Team 1       " + self.game_controller.get_nextplayer(1)
+                self.next_player_text = f"Team {next_team_id}       " + self.game_controller.get_nextplayer(next_team_id)
             elif(team_id == 1):
                 self.team1_score = str(score)
                 self.team1_points[round-1] = self.player_point
-                self.next_player_text = "Team 0       " + self.game_controller.get_nextplayer(0)
+                self.next_player_text = f"Team {next_team_id}       " + self.game_controller.get_nextplayer(next_team_id)
+            elif(team_id == 2):
+                self.team2_score = str(score)
+                self.team2_points[round-1] = self.player_point
+                self.next_player_text = f"Team {next_team_id}       " + self.game_controller.get_nextplayer(next_team_id)
+            elif(team_id == 3):
+                self.team3_score = str(score)
+                self.team3_points[round-1] = self.player_point
+                self.next_player_text = f"Team {next_team_id}       " + self.game_controller.get_nextplayer(next_team_id)
             self.clear_display()
         else:
             pass       
