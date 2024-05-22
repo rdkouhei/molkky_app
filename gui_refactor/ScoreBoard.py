@@ -77,7 +77,8 @@ class ScoreBoard(BoxLayout):
     h2_fontsize = 32
     h3_fontsize = 24
     # Color
-    color_background = [0.66, 0.81, 0.93, 1]
+    # color_background = [0.66, 0.81, 0.93, 1]
+    color_background = [0,0,0, 1]
     color_boader = [0.40, 0.65, 0.8, 0.3]
 
     '''

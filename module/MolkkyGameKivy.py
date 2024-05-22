@@ -44,7 +44,6 @@ class MolkkyGameKivy():
     '''
     UI >> Database
     '''
-    # todo 点数修正できるようにする
     def add(self, point):
         # if 
         turn_team_id = self.turn % self.team_num
@@ -55,12 +54,14 @@ class MolkkyGameKivy():
         proc_right = True
         return score, turn_team_id, round, proc_right
 
+    # 点の修正用
     def add_middle(self, team_id, round, point):
         focus_team = self.teams[team_id]
         score, is_continue, ismiddle, proc_right = focus_team.add_middle(point, round)
-        round = focus_team.get_next_pointer()
+        round += 1
         if ismiddle == False:
             self.turn += 1
+            round = focus_team.get_next_pointer()
         return score, team_id, round, ismiddle, proc_right
 
     '''

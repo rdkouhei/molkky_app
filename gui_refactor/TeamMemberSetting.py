@@ -13,12 +13,19 @@ class TeamMemberSetting(BoxLayout):
     input_box = StringProperty("")
     go_next_screen = ObjectProperty(None)
 
+    # Font Size
+    title_fontsize = 55
+    h1_fontsize = 40
+    h2_fontsize = 32
+    h3_fontsize = 24
+
     def __init__(self, **kwargs):
         self.team_num = 0
         self.player_num = []
         self.player_name = []
         self.append_counter = 0
         self.team_pointer = 0
+        self.message_instruction = "Input Player Name"
         super(TeamMemberSetting, self).__init__(**kwargs)
     
     def update_label(self, input):
@@ -29,7 +36,8 @@ class TeamMemberSetting(BoxLayout):
         self.player_num = player_num
         for i in range(self.team_num):
             self.player_name.append([])
-        self.message_team = f"Player num : {self.player_num}"
+        for i, item in enumerate(player_num):
+            self.message_team += f"Team{i}, Player num : {item}\n"
         # print(f"Team num : {self.team_num}\nPlayer num : {self.player_num}")
     
     def clear_input(self):
@@ -46,7 +54,10 @@ class TeamMemberSetting(BoxLayout):
         if self.team_pointer < self.team_num:    
             self.player_name[self.team_pointer].append(self.text_input)
             self.append_counter += 1
-            self.message_player = f"Added a player : {self.player_name}"
+            self.message_player = ""
+            for i, items in enumerate(self.player_name):
+                for item in items:
+                    self.message_player += f"Team{i}, Player Name : {item}\n"
             if (self.team_pointer == self.team_num-1) and (self.append_counter == self.player_num[self.team_pointer]):
                 self.message_instruction = "Go Next"
             self.ids.input_text.text = ""

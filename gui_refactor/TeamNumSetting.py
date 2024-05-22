@@ -12,9 +12,15 @@ class TeamNumSetting(BoxLayout):
     setting_view = ListProperty([])
     user_input = StringProperty("")
     go_next_screen = ObjectProperty(None)
+
+    # Font Size
+    title_fontsize = 55
+    h1_fontsize = 40
+    h2_fontsize = 32
+    h3_fontsize = 24
     
     def __init__(self, **kwargs):
-        self.message = "Input Team Number"
+        self.message = "Input Num of Teams"
         self.register_func = [self.register_team_num, self.register_player_num]
         self.register_mode = 0
         self.register_player_num_count = 0
@@ -39,26 +45,26 @@ class TeamNumSetting(BoxLayout):
         if int(self.user_input) != 0:
             self.team_num = int(self.user_input)
             self.clear_display()
-            self.setting_view[0] = f"Team Number : {self.team_num}"
-            self.message = "Input Player Number"
+            self.setting_view[0] = f"Num of Teams : {self.team_num}"
+            self.message = "Input Num of Players (Team0)"
             self.register_mode += 1
         else:
-            self.message = "Incorrect Input(0)\nInput Team Number"
+            self.message = f"Input Num of Players (Team{self.register_player_num_count})"
             self.clear_display()
                         
     def register_player_num(self):
         if int(self.user_input) != 0:
             self.player_num.append(int(self.user_input))
             self.clear_display()
-            self.setting_view[1] += f"Team {self.register_player_num_count}, Player Number : {self.player_num[-1]}\n"
+            self.setting_view[1] += f"Team {self.register_player_num_count}, Num of Players : {self.player_num[-1]}\n"
             self.register_player_num_count += 1
             if self.register_player_num_count >= self.team_num:
                 self.message = "Go to Next"
                 self.register_mode += 1
             else:
-                self.message = "Input Player Number"
+                self.message = f"Input Num of Players (Team{self.register_player_num_count})"
         else:
-            self.message = "Incorrect Input(0)\nInput Player Number"
+            self.message = "Incorrect Input(0)\nInput Num of Players"
 
     def register(self):
         try:
