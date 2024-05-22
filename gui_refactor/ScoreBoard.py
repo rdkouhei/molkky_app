@@ -103,6 +103,9 @@ class ScoreBoard(BoxLayout):
         self.team3_points = ['', '', '', '', '', '', '', '', '', '', 
                             '', '', '', '', '', '', '', '', '', '',
                             '', '', '', '', '', '', '', '', '', '']
+        
+        self.revert_flag = {"flag"    : 0}
+        self.next_team_id = 0
 
         super(ScoreBoard, self).__init__(**kwargs)
 
@@ -141,6 +144,8 @@ class ScoreBoard(BoxLayout):
         for i in range(button_col):
             new_button = Button()
             new_button.text = team_points[i][row]
+            new_button.id = f"{i}_{row}" # 0_0はteam0_round0という意味
+            new_button.bind(on_press = self.revert_score)
             self.ids.grid_layout.add_widget(new_button)
             bind_func[i](new_button, row)
 
@@ -224,27 +229,57 @@ class ScoreBoard(BoxLayout):
     
     def register(self):
         if(self.player_point != ""):
-            score, team_id, round = self.game_controller.add(int(self.player_point))
-            next_team_id = self.team_oder[team_id]
-            if(team_id == 0):
-                self.team0_score = str(score)
-                self.team0_points[round-1] = self.player_point
-                self.next_player_text = f"Team {next_team_id}       " + self.game_controller.get_nextplayer(next_team_id)
-            elif(team_id == 1):
-                self.team1_score = str(score)
-                self.team1_points[round-1] = self.player_point
-                self.next_player_text = f"Team {next_team_id}       " + self.game_controller.get_nextplayer(next_team_id)
-            elif(team_id == 2):
-                self.team2_score = str(score)
-                self.team2_points[round-1] = self.player_point
-                self.next_player_text = f"Team {next_team_id}       " + self.game_controller.get_nextplayer(next_team_id)
-            elif(team_id == 3):
-                self.team3_score = str(score)
-                self.team3_points[round-1] = self.player_point
-                self.next_player_text = f"Team {next_team_id}       " + self.game_controller.get_nextplayer(next_team_id)
+            if self.revert_flag["flag"] == 0:
+                score, team_id, round, proc_right = self.game_controller.add(int(self.player_point))
+                self.next_team_id = self.team_oder[team_id]
+            elif self.revert_flag["flag"] == 1:
+                score, team_id, round, ismiddle, proc_right = self.game_controller.add_middle(self.revert_flag["team_id"], self.revert_flag["round"], int(self.player_point))
+                if ismiddle == False:
+                    self.next_team_id = self.team_oder[team_id]
+                self.revert_flag["flag"] = 0
+
+            if proc_right:
+                if(team_id == 0):
+                    self.team0_score = str(score)
+                    self.team0_points[round-1] = self.player_point
+                    self.next_player_text = f"Team {self.next_team_id}       " + self.game_controller.get_nextplayer(self.next_team_id)
+                elif(team_id == 1):
+                    self.team1_score = str(score)
+                    self.team1_points[round-1] = self.player_point
+                    self.next_player_text = f"Team {self.next_team_id}       " + self.game_controller.get_nextplayer(self.next_team_id)
+                elif(team_id == 2):
+                    self.team2_score = str(score)
+                    self.team2_points[round-1] = self.player_point
+                    self.next_player_text = f"Team {self.next_team_id}       " + self.game_controller.get_nextplayer(self.next_team_id)
+                elif(team_id == 3):
+                    self.team3_score = str(score)
+                    self.team3_points[round-1] = self.player_point
+                    self.next_player_text = f"Team {self.next_team_id}       " + self.game_controller.get_nextplayer(self.next_team_id)
             self.clear_display()
         else:
-            pass       
+            pass
+    
+    # todo 点数修正できるようにする
+    def revert_score(self, instance):
+        team_id = int(instance.id.split('_')[0]) # 0_0 → 0
+        round   = int(instance.id.split('_')[1])
+        if(team_id == 0):
+            self.player_point = instance.text
+            self.next_player_text = f"Team {team_id}       Round {round+1}  " + self.game_controller.get_player(team_id, round % len(self.member_list[0]))
+        elif(team_id == 1):
+            self.player_point = instance.text
+            self.next_player_text = f"Team {team_id}       Round {round+1}  "  + self.game_controller.get_player(team_id, round % len(self.member_list[1]))
+        elif(team_id == 2):
+            self.player_point = instance.text
+            self.next_player_text = f"Team {team_id}       Round {round+1}  "  + self.game_controller.get_player(team_id, round % len(self.member_list[2]))
+        elif(team_id == 3):
+            self.player_point = instance.text
+            self.next_player_text = f"Team {team_id}       Round {round+1}  "  + self.game_controller.get_player(team_id, round % len(self.member_list[3]))
+        
+        self.revert_flag = {"flag"    : 1,
+                            "team_id" : team_id,
+                            "round"   : round}
+        print(f'team_id {self.revert_flag["team_id"]}, round {self.revert_flag["round"]}')
 
 class ScoreBoardApp(App):
     def build(self):
