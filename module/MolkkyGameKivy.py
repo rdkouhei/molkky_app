@@ -45,21 +45,33 @@ class MolkkyGameKivy():
     UI >> Database
     '''
     def add(self, point):
+        # if 
         turn_team_id = self.turn % self.team_num
         turn_team = self.teams[turn_team_id]
         score, is_continue = turn_team.add(point)
         round = turn_team.get_next_pointer()
         self.turn += 1
-        return score, turn_team_id, round
-    
-    def back():
-        return 0
+        proc_right = True
+        return score, turn_team_id, round, proc_right
+
+    # 点の修正用
+    def add_middle(self, team_id, round, point):
+        focus_team = self.teams[team_id]
+        score, is_continue, ismiddle, proc_right = focus_team.add_middle(point, round)
+        round += 1
+        if ismiddle == False:
+            self.turn += 1
+            round = focus_team.get_next_pointer()
+        return score, team_id, round, ismiddle, proc_right
 
     '''
     Database >> UI
     '''
     def get_nextplayer(self, team_id):
         return self.teams[team_id].next_player()
+    
+    def get_player(self, team_id, order):
+        return self.teams[team_id].get_player(order)
     
     def get_point_board(self, team_id):
         point_board = self.teams[team_id].get_point_board()

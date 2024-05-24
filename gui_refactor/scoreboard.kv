@@ -1,0 +1,210 @@
+#: import get_color_from_hex kivy.utils.get_color_from_hex
+
+<BorderLabel@Label>:
+    canvas.before:
+        Color:
+            rgba: [0.40, 0.65, 0.8, 1]
+        Line:
+            rectangle: self.x, self.y, self.width, self.height
+            width: 1.2
+
+<CalcButton@Button>:
+	font_size: 30
+	background_normal: ''
+	background_down: ''
+	background_color: get_color_from_hex("#1F6982")
+	on_press: self.background_color = get_color_from_hex("#184B5C")
+	on_release: self.background_color = get_color_from_hex("#1F6982")
+
+<NumberButton@CalcButton>:
+	font: "Roboto"
+	font_size: 30
+	bold: True
+	on_press: self.parent.parent.parent.parent.parent.add_number(self.text)
+
+<ClearButton@CalcButton>:
+	on_press: self.parent.parent.parent.parent.parent.clear_display()
+
+<EqualButton@CalcButton>:
+	on_press: self.parent.parent.parent.parent.parent.register()
+
+<Keyboard@GridLayout>:
+	cols: 3
+	rows: 4
+	spacing: 2
+	padding: 4
+
+    NumberButton:
+		text: "1"
+	NumberButton:
+		text: "2"
+	NumberButton:
+		text: "3"
+    
+    NumberButton:
+		text: "4"
+	NumberButton:
+		text: "5"
+	NumberButton:
+		text: "6"
+    
+    NumberButton:
+		text: "7"
+	NumberButton:
+		text: "8"
+	NumberButton:
+		text: "9"
+
+	ClearButton:
+		text: "C"
+	NumberButton:
+		text: "0"
+	EqualButton:
+		text: "OK"
+
+
+<ScoreBoard>:
+    orientation: 'vertical'
+    size: root.size
+    padding: 20
+    canvas:
+        Color:
+            rgba: root.color_background
+        Rectangle:
+            size: self.size
+            pos: self.pos
+    
+    # App title
+    Label:
+        text: root.app_title
+        size_hint: 1, 0.1
+        font_size: root.title_fontsize
+    
+    # main box
+    BoxLayout:
+        orientation: 'vertical'
+        size_hint: 1, 0.8
+
+        # Score board
+        BoxLayout:
+            orientation: 'vertical'
+            size_hint: 1, 1
+            padding: 20
+            
+            # visualize boader
+            canvas.before:
+                Color:
+                    rgba: root.color_boader
+                Line:
+                    rectangle: self.x, self.y, self.width, self.height
+                    width: 1.5
+
+            ScrollView:
+                GridLayout:
+                    size_hint_y: None
+                    row_default_height: 30
+                    height: self.minimum_height
+                    id: grid_layout
+                    
+        Widget:
+            size_hint: 1, 0.05
+        
+        # 2. User Input
+        BoxLayout:
+            orientation: 'vertical'
+            size_hint: 1, 1
+            padding: 20
+
+            # visualize boader
+            canvas.before:
+                Color:
+                    rgba: root.color_boader
+                Line:
+                    rectangle: self.x, self.y, self.width, self.height
+                    width: 1.5
+            
+            # Player info
+            BoxLayout:
+                orientation: 'horizontal'
+                size_hint: 1, 0.3
+
+                BorderLabel:
+                    text: root.next_player_text
+                    size_hint: 0.7, 1
+                    font_size: root.h2_fontsize
+
+                BoxLayout:
+                    orientation: 'horizontal'
+                    size_hint: 0.3, 0.5
+                    BorderLabel:
+                        text: root.previous_point
+                        size_hint: 1, 1
+
+                    BorderLabel:
+                        text: root.pre_previous_point
+                        size_hint: 1, 1
+            
+            # Player Input
+            BoxLayout:
+                orientation: 'horizontal'
+                size_hint: 1, 0.7
+
+                BorderLabel:
+                    text: root.player_point
+                    size_hint: 1, 1
+                    font_size: 40
+
+                Keyboard:
+        
+        Widget:
+            size_hint: 1, 0.05
+
+        # 3. Total Score
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint: 1, 1
+            padding: 20
+            id: score_board
+
+            # visualize boader
+            canvas.before:
+                Color:
+                    rgba: root.color_boader
+                Line:
+                    rectangle: self.x, self.y, self.width, self.height
+                    width: 1.5
+
+            
+
+    # sub box
+    BoxLayout:
+        orientation: 'horizontal'
+        size_hint: 1, 0.1
+
+        # 4. Back
+        #Button:
+        #    id: button1
+        #    size_hint: 0.1, 0.9
+        #    text: "Back"
+        #    font_size: 18
+        #    #on_press: root.buttonClicked_back() 
+
+        Widget:
+            size_hint: 0.6, None
+
+        # 5. Next
+        Button:
+            id: button2
+            size_hint: 0.2, 0.9
+            text: "Next Game"
+            font_size: 18
+            on_press: root.next_game()
+
+        Button:
+            id: button2
+            size_hint: 0.2, 0.9
+            text: "Reset Member"
+            font_size: 18
+            on_press: root.go_next_screen()
+        
+        

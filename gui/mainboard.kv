@@ -1,0 +1,269 @@
+<MainBoard@BoxLayout>:
+    orientation: 'vertical'
+    size: root.size
+    padding: 20
+    canvas:
+        Color:
+            rgba: [0.66, 0.81, 0.93, 1]
+        Rectangle:
+            size: self.size
+            pos: self.pos
+    
+    # App title
+    Label:
+        text: root.app_title
+        size_hint: 1, 0.1
+        font_size: root.title_fontsize
+    
+    # main box
+    BoxLayout:
+        orientation: 'vertical'
+        size_hint: 1, 0.8
+
+        # Score board
+        BoxLayout:
+            orientation: 'vertical'
+            size_hint: 1, 1
+            padding: 20
+            
+            # visualize boader
+            canvas.before:
+                Color:
+                    rgba: [0.40, 0.65, 0.8, 0.3]
+                Line:
+                    rectangle: self.x, self.y, self.width, self.height
+                    width: 1.5
+
+
+            ScrollView:
+                GridLayout:
+                    cols:3
+                    size_hint_y: None
+                    row_default_height: 30
+                    height: self.minimum_height
+                    Label:
+                        text: "1"
+                        font_size: root.h3_fontsize
+                    Button:
+                        text: root.team0_points[0]
+                        font_size: root.h3_fontsize
+                    Button:
+                        text: root.team1_points[0]
+                        font_size: root.h3_fontsize
+
+                    Label:
+                        text: "2"
+                        font_size: root.h3_fontsize
+                    Button:
+                        text: root.team0_points[1]
+                        font_size: root.h3_fontsize
+                    Button:
+                        text: root.team1_points[1]
+                        font_size: root.h3_fontsize
+
+                    Label:
+                        text: "3"
+                        font_size: root.h3_fontsize
+                    Button:
+                        text: root.team0_points[2]
+                        font_size: root.h3_fontsize
+                    Button:
+                        text: root.team1_points[2]
+                        font_size: root.h3_fontsize
+
+                    Label:
+                        text: "4"
+                        font_size: root.h3_fontsize
+                    Button:
+                        text: root.team0_points[3]
+                        font_size: root.h3_fontsize
+                    Button:
+                        text: root.team1_points[3]
+                        font_size: root.h3_fontsize
+
+                    Label:
+                        text: "5"
+                        font_size: root.h3_fontsize
+                    Button:
+                        text: root.team0_points[4]
+                        font_size: root.h3_fontsize
+                    Button:
+                        text: root.team1_points[4]
+                        font_size: root.h3_fontsize
+
+                    Label:
+                        text: "6"
+                        font_size: root.h3_fontsize
+                    Button:
+                        text: root.team0_points[5]
+                        font_size: root.h3_fontsize
+                    Button:
+                        text: root.team1_points[5]
+                        font_size: root.h3_fontsize
+
+                    Label:
+                        text: "7"
+                        font_size: root.h3_fontsize
+                    Button:
+                        text: root.team0_points[6]
+                        font_size: root.h3_fontsize
+                    Button:
+                        text: root.team1_points[6]
+                        font_size: root.h3_fontsize
+
+                    Label:
+                        text: "8"
+                        font_size: root.h3_fontsize
+                    Button:
+                        text: root.team0_points[7]
+                        font_size: root.h3_fontsize
+                    Button:
+                        text: root.team1_points[7]
+                        font_size: root.h3_fontsize
+
+                    Label:
+                        text: "9"
+                        font_size: root.h3_fontsize
+                    Button:
+                        text: root.team0_points[8]
+                        font_size: root.h3_fontsize
+                    Button:
+                        text: root.team1_points[8]
+                        font_size: root.h3_fontsize
+
+                    Label:
+                        text: "10"
+                        font_size: root.h3_fontsize
+                    Button:
+                        text: root.team0_points[9]
+                        font_size: root.h3_fontsize
+                    Button:
+                        text: root.team1_points[9]
+                        font_size: root.h3_fontsize
+                        
+                    Label:
+                        text: "11"
+                        font_size: root.h3_fontsize
+                    Button:
+                        text: root.team0_points[10]
+                        font_size: root.h3_fontsize
+                    Button:
+                        text: root.team1_points[10]
+                        font_size: root.h3_fontsize
+
+        Widget:
+            size_hint: 1, 0.05
+        
+        # 2. User Input
+        BoxLayout:
+            orientation: 'vertical'
+            size_hint: 1, 1
+            padding: 20
+
+            # visualize boader
+            canvas.before:
+                Color:
+                    rgba: [0.40, 0.65, 0.8, 0.3]
+                Line:
+                    rectangle: self.x, self.y, self.width, self.height
+                    width: 1.5
+            
+            # Player info
+            BoxLayout:
+                orientation: 'horizontal'
+                size_hint: 1, 0.3
+
+                BorderLabel:
+                    text: root.next_player_text
+                    size_hint: 0.7, 1
+                    font_size: root.h2_fontsize
+
+                BoxLayout:
+                    orientation: 'horizontal'
+                    size_hint: 0.3, 0.5
+                    BorderLabel:
+                        text: root.previous_point
+                        size_hint: 1, 1
+
+                    BorderLabel:
+                        text: root.pre_previous_point
+                        size_hint: 1, 1
+            
+            # Player Input
+            BoxLayout:
+                orientation: 'horizontal'
+                size_hint: 1, 0.7
+
+                BorderLabel:
+                    text: root.player_point
+                    size_hint: 1, 1
+                    font_size: 40
+
+                Keyboard:
+        
+        Widget:
+            size_hint: 1, 0.05
+
+        # 3. Total Score
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint: 1, 1
+            padding: 20
+
+            # visualize boader
+            canvas.before:
+                Color:
+                    rgba: [0.40, 0.65, 0.8, 0.3]
+                Line:
+                    rectangle: self.x, self.y, self.width, self.height
+                    width: 1.5
+
+            BoxLayout:
+                orientation: 'vertical'
+                size_hint: 1, 1
+
+                BorderLabel:
+                    text: root.team0_name
+                    size_hint: 0.5, 0.3
+
+                BorderLabel:
+                    text: root.team0_score
+                    size_hint: 1, 0.7
+                    font_size: 48
+
+            BoxLayout:
+                orientation: 'vertical'
+                size_hint: 1, 1
+
+                BorderLabel:
+                    text: root.team1_name
+                    size_hint: 0.5, 0.3
+
+                BorderLabel:
+                    text: app.root.team1_score
+                    size_hint: 1, 0.7
+                    font_size: 48
+
+    # sub box
+    BoxLayout:
+        orientation: 'horizontal'
+        size_hint: 1, 0.1
+
+        # 4. Back
+        Button:
+            id: button1
+            size_hint: 0.1, 0.9
+            text: "Back"
+            font_size: 18
+            on_press: root.buttonClicked_back() 
+
+        Widget:
+            size_hint: 0.5, None
+
+        # 5. Next
+        Button:
+            id: button2
+            size_hint: 0.1, 0.9
+            text: "Next"
+            font_size: 18
+            on_press: root.buttonClicked_next()

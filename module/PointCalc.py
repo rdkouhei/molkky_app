@@ -18,11 +18,29 @@ class PointCalc:
         self.next_pointer += 1
         return score, is_continue
     
+    def add_middle(self, point, num):
+        if num < len(self.point_board):
+            self.point_board[num][1] = point
+            score, is_continue = self.update_score()
+            ismiddle = True
+            proc_right = True
+        elif num == len(self.point_board):
+            print(num)
+            score, is_continue = self.add(point)
+            ismiddle = False
+            proc_right = True
+        else:
+            score = None
+            is_continue = None
+            ismiddle = None
+            proc_right = False
+        return score, is_continue, ismiddle, proc_right
+    
     def back(self, num):
-        self.point_board = self.point_board[:-num]
-        self.update_score()
-        self.next_pointer -= num
-        return self.next_pointer
+        self.point_board = self.point_board[:num]
+        score, is_continue = self.update_score()
+        self.next_pointer = num
+        return score, is_continue
     
     def update_score(self):
         score = 0
@@ -65,3 +83,6 @@ class PointCalc:
     
     def get_team_name(self):
         return self.team_setting["team_name"]
+    
+    def get_player(self, order):
+        return self.team_setting["team_member"][order]
