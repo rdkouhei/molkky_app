@@ -5,8 +5,8 @@ from kivy.uix.button import Button
 from kivy.properties import StringProperty, ListProperty, ObjectProperty
 
 from kivy.config import Config
-Config.set('graphics', 'width', '600')
-Config.set('graphics', 'height', '960')
+# Config.set('graphics', 'width', '600')
+# Config.set('graphics', 'height', '960')
 
 # Import Original Module (../module/)
 import sys
@@ -15,12 +15,17 @@ from PointCalc import PointCalc
 from MolkkyGameKivy import MolkkyGameKivy
 from TeamNumSetting import TeamNumSetting
 from TeamMemberSetting import TeamMemberSetting
+from ConfirmPopup import ConfirmPopup
 
 # kvファイルを画面ごとに分離してバラで読み込む
 from kivy.lang import Builder
 Builder.load_file('scoreboard.kv')
 Builder.load_file('teamnumsetting.kv')
 Builder.load_file('teammembersetting.kv')
+try:
+    Builder.load_file('module/confirmpopup.kv')
+except:
+    Builder.load_file('../module/confirmpopup.kv')
 from kivy.factory import Factory
 
 class ScoreBoard(BoxLayout):
@@ -109,6 +114,7 @@ class ScoreBoard(BoxLayout):
         self.next_team_id = 0
 
         super(ScoreBoard, self).__init__(**kwargs)
+        self.ids.comfirm_pop.go_next = self.go_next_screen
 
     def reset_game(self, member):
         self.__init__()
@@ -129,13 +135,13 @@ class ScoreBoard(BoxLayout):
         self.add_score_widget(len(member))
     
     def add_round_widgets(self, round_num):
-        self.ids.grid_layout.cols = len(self.member_list) + 1 
+        self.ids.grid_layout.cols = len(self.member_list) + 1
         for i in range(round_num):
             self.add_round_label(i)
             self.add_round_button(i, len(self.member_list))
 
     def add_round_label(self,i):
-        new_label = Label(text=str(i+1))
+        new_label = Label(text=str(i+1), font_size=self.h3_fontsize)
         self.ids.grid_layout.add_widget(new_label)
     
     def add_round_button(self, row, button_col):
@@ -143,7 +149,7 @@ class ScoreBoard(BoxLayout):
         bind_func = [self.bind_team0_point, self.bind_team1_point, self.bind_team2_point, self.bind_team3_point]
         team_points = [self.team0_points, self.team1_points, self.team2_points, self.team3_points]
         for i in range(button_col):
-            new_button = Button()
+            new_button = Button(font_size=self.h3_fontsize)
             new_button.text = team_points[i][row]
             new_button.id = f"{i}_{row}" # 0_0はteam0_round0という意味
             new_button.bind(on_press = self.revert_score)
@@ -175,7 +181,7 @@ class ScoreBoard(BoxLayout):
     def add_team0_score_widget(self):
         # Team 0 layout
         team0_layout = BoxLayout(orientation='vertical', size_hint=(1, 1))
-        team0_name_label = Factory.BorderLabel(text=self.team0_name, size_hint=(0.5, 0.3))
+        team0_name_label = Factory.BorderLabel(text=self.team0_name, size_hint=(0.7, 0.3), font_size=self.h2_fontsize)
         team0_score_label = Factory.BorderLabel(text=self.team0_score, size_hint=(1, 0.7), font_size=48)
         team0_layout.add_widget(team0_name_label)
         team0_layout.add_widget(team0_score_label)
@@ -186,7 +192,7 @@ class ScoreBoard(BoxLayout):
     def add_team1_score_widget(self):
         # Team 1 layout
         team1_layout = BoxLayout(orientation='vertical', size_hint=(1, 1))
-        team1_name_label = Factory.BorderLabel(text=self.team1_name, size_hint=(0.5, 0.3))
+        team1_name_label = Factory.BorderLabel(text=self.team1_name, size_hint=(0.7, 0.3), font_size=self.h2_fontsize)
         team1_score_label = Factory.BorderLabel(text=self.team1_score, size_hint=(1, 0.7), font_size=48)
         team1_layout.add_widget(team1_name_label)
         team1_layout.add_widget(team1_score_label)
@@ -197,7 +203,7 @@ class ScoreBoard(BoxLayout):
     def add_team2_score_widget(self):
         # Team 2 layout
         team2_layout = BoxLayout(orientation='vertical', size_hint=(1, 1))
-        team2_name_label = Factory.BorderLabel(text=self.team2_name, size_hint=(0.5, 0.3))
+        team2_name_label = Factory.BorderLabel(text=self.team2_name, size_hint=(0.7, 0.3), font_size=self.h2_fontsize)
         team2_score_label = Factory.BorderLabel(text=self.team2_score, size_hint=(1, 0.7), font_size=48)
         team2_layout.add_widget(team2_name_label)
         team2_layout.add_widget(team2_score_label)
@@ -208,7 +214,7 @@ class ScoreBoard(BoxLayout):
     def add_team3_score_widget(self):
         # Team 3 layout
         team3_layout = BoxLayout(orientation='vertical', size_hint=(1, 1))
-        team3_name_label = Factory.BorderLabel(text=self.team3_name, size_hint=(0.5, 0.3))
+        team3_name_label = Factory.BorderLabel(text=self.team3_name, size_hint=(0.7, 0.3), font_size=self.h2_fontsize)
         team3_score_label = Factory.BorderLabel(text=self.team3_score, size_hint=(1, 0.7), font_size=48)
         team3_layout.add_widget(team3_name_label)
         team3_layout.add_widget(team3_score_label)
